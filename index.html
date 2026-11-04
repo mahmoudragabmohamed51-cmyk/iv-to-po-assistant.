@@ -152,6 +152,21 @@
                 </div>
             </section>
 
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4">Expanded Patient Profile & Vital Signs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Age (years)</label><input id="patientAge" type="number" placeholder="45" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Weight (kg)</label><input id="patientWeight" type="number" placeholder="70" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Sex</label><input id="patientSex" type="select" placeholder="Unknown" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Primary diagnosis</label><input id="patientDiagnosis" type="text" placeholder="Pneumonia" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Blood pressure (mmHg)</label><input id="patientBP" type="text" placeholder="120/80" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Heart rate (bpm)</label><input id="patientHR" type="number" placeholder="82" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Temperature (°C)</label><input id="patientTemp" type="number" placeholder="37.0" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Respiratory rate (/min)</label><input id="patientRR" type="number" placeholder="18" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">SpO₂ (%)</label><input id="patientSpo2" type="number" placeholder="97" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">WBC (×10⁹/L)</label><input id="patientWBC" type="number" placeholder="8.5" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">CRP (mg/L)</label><input id="patientCRP" type="number" placeholder="12" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Serum creatinine (mg/dL)</label><input id="patientCreatinine" type="number" placeholder="1.0" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">AST (U/L)</label><input id="patientAST" type="number" placeholder="Unknown" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">ALT (U/L)</label><input id="patientALT" type="number" placeholder="Unknown" class="w-full border rounded-lg p-2.5 text-sm"></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Total bilirubin (mg/dL)</label><input id="patientBilirubin" type="number" placeholder="Unknown" class="w-full border rounded-lg p-2.5 text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Sex</label><select id="patientSex" class="w-full border rounded-lg p-2.5 text-sm"><option value="">Unknown / not documented</option><option>Female</option><option>Male</option></select></div>
+                </div>
+            </section>
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4">Expanded GI & Infection Assessment</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Nausea</label><select id="nauseaStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>No</option><option>Mild / controlled</option><option>Persistent / severe</option></select></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Vomiting</label><select id="vomitingStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>No</option><option>Occasional</option><option>Persistent / severe</option></select></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Diarrhea</label><select id="diarrheaStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>No</option><option>Mild</option><option>Severe / persistent</option></select></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Swallowing</label><select id="swallowStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Normal</option><option>Needs assistance</option><option>Unable to swallow safely</option></select></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">NPO status</label><select id="npoStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Not NPO</option><option>Temporary NPO</option><option>Strict NPO</option></select></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Enteral tube</label><select id="tubeStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Not present</option><option>Present and usable</option><option>Present but not usable</option></select></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Culture / sensitivity</label><select id="cultureStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Pending</option><option>Susceptible</option><option>Resistant – review required</option><option>No growth</option></select></div><div><label class="block text-xs font-semibold text-slate-600 mb-1">Infection trend</label><select id="infectionTrend" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Improving</option><option>Unchanged</option><option>Worsening</option></select></div>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">Unknown means not assessed; it must not be interpreted as a normal finding. Review results and clinical context before making a decision.</p>
+            </section>
+
             <!-- Action Buttons -->
             <div class="flex flex-wrap gap-4 justify-end no-print">
                 <button type="button" onclick="evaluateConversion()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition text-sm flex items-center gap-2">
@@ -214,7 +229,10 @@
             const ivDose = parseFloat(document.getElementById('ivDose').value) || 400;
             const drugInfo = drugDatabase[ivDrugKey];
 
-            // Section checkboxes
+            const extraAssessmentIds = ['patientAge','patientWeight','patientSex','patientDiagnosis','patientBP','patientHR','patientTemp','patientRR','patientSpo2','patientWBC','patientCRP','patientCreatinine','patientAST','patientALT','patientBilirubin','nauseaStatus','vomitingStatus','diarrheaStatus','swallowStatus','npoStatus','tubeStatus','cultureStatus','infectionTrend'];
+            const extraAssessment = extraAssessmentIds.map(id => [id, document.getElementById(id)?.value || '']).filter(([,value]) => value && value !== 'Unknown / not documented' && value !== 'Unknown');
+
+                        // Section checkboxes
             const stableVitals = document.getElementById('stableVitals').checked;
             const improvingInfection = document.getElementById('improvingInfection').checked;
             const afebrile = document.getElementById('afebrile').checked;
@@ -262,11 +280,22 @@
                 reasons.push("✅ Gastrointestinal function is adequate with no severe vomiting or diarrhea.");
             }
 
-            // 3. Bioavailability & Calculated Equivalent Dose
-            let calculatedPoDoseMg = Math.round(ivDose / drugInfo.bioavail);
-            reasons.push(`💊 **Bioavailability Analysis:** ${drugInfo.name} has an oral bioavailability of ~${Math.round(drugInfo.bioavail * 100)}%. Equivalent target oral dose calculated from ${ivDose}mg IV is approximately **${calculatedPoDoseMg} mg** (Standard suggested: ${drugInfo.standardPoDose}).`);
+            // 3. Bioavailability information – do not derive PO dose by dividing IV dose by F
+            reasons.push(`💊 **Bioavailability:** ${drugInfo.name} has an estimated oral bioavailability of ~${Math.round(drugInfo.bioavail * 100)}%. This value is informational only; the PO dose must follow a drug-specific, protocol-verified regimen. Reference regimen in this prototype: **${drugInfo.standardPoDose}**.`);
 
-            // 4. Renal Function Adjustment Checks
+            if (extraAssessment.length) {
+                reasons.push('📝 Additional patient data recorded for clinician review: ' + extraAssessment.map(([key,value]) => key.replace(/([A-Z])/g,' $1') + ': ' + value).join(' | ') + '.');
+            }
+            const extraValues = Object.fromEntries(extraAssessment);
+            if (['Persistent / severe'].includes(extraValues.vomitingStatus) || extraValues.swallowStatus === 'Unable to swallow safely' || extraValues.diarrheaStatus === 'Severe / persistent' || extraValues.npoStatus === 'Strict NPO' || extraValues.tubeStatus === 'Present but not usable') {
+                scoreCategory = 'not';
+                reasons.push('❌ Oral/enteral route concern documented (severe vomiting/diarrhea, unsafe swallowing, strict NPO, or unusable tube). Do not convert until clinically reviewed.');
+            } else if (extraValues.vomitingStatus === 'Occasional' || extraValues.nauseaStatus === 'Persistent / severe' || extraValues.cultureStatus === 'Resistant – review required' || extraValues.infectionTrend === 'Worsening' || extraValues.infectionTrend === 'Unchanged') {
+                if (scoreCategory !== 'not') scoreCategory = 'further';
+                reasons.push('⚠️ GI symptoms, microbiology, or infection trend require pharmacist/clinician review before conversion.');
+            }
+
+                        // 4. Renal Function Adjustment Checks
             let renalAlertHtml = "";
             if (crcl !== null) {
                 if (crcl < drugInfo.renalThreshold) {
@@ -296,7 +325,7 @@
                 resultBadge.className = "p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm bg-emerald-100 text-emerald-800 border border-emerald-200";
                 resultBadge.innerHTML = "🟢 Screening Result: Potentially Eligible for IV-to-PO Conversion";
                 recommendationText = `The patient (ID: <strong>${patientId}</strong>) meets all clinical stability and absorption criteria. 
-                <br><strong>Action Plan:</strong> Convert IV ${drugInfo.name} ${ivDose}mg to equivalent oral dosage of approximately **${calculatedPoDoseMg} mg** (${drugInfo.standardPoDose}).
+                <br><strong>Action Plan:</strong> Review conversion from IV ${drugInfo.name} ${ivDose} mg using the drug-specific oral regimen: **${drugInfo.standardPoDose}**. Confirm indication, dose, interval, formulation, interactions, and local protocol before prescribing.
                 ${renalAlertHtml}`;
             } else if (scoreCategory === 'further') {
                 resultBadge.className = "p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm bg-amber-100 text-amber-800 border border-amber-200";

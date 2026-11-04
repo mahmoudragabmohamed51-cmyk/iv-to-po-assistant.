@@ -23,7 +23,7 @@
                 <h1 class="text-2xl font-bold flex items-center gap-2">
                     <span>🏥</span> IV to PO Therapeutic Conversion Assistant
                 </h1>
-                <p class="text-xs text-blue-200 mt-1">Advanced Clinical Pharmacy Decision-Support Prototype (Bioavailability & Renal Adjustment)</p>
+                <p class="text-xs text-blue-200 mt-1">Clinical Pharmacy Screening & Decision-Support Prototype</p>
             </div>
             <div class="mt-2 md:mt-0 bg-blue-800 text-xs px-3 py-1 rounded-full border border-blue-700">
                 Status: Clinical Screening & Dosing Tool
@@ -36,7 +36,7 @@
         <div class="flex items-start">
             <div class="text-amber-500 text-xl mr-3">⚠️</div>
             <div class="text-sm text-amber-800">
-                <strong class="font-semibold">Clinical Safety Warning:</strong> This prototype includes automated bioavailability calculations and renal dose adjustments for educational and decision-support exploration only. It is <strong>not clinically validated</strong>. Always verify calculations with institutional protocols and clinical judgment.
+                <strong class="font-semibold">Clinical Safety Warning:</strong> This prototype provides screening prompts and reference information for educational and decision-support exploration only. It is <strong>not clinically validated</strong>. Always verify calculations with institutional protocols and clinical judgment.
             </div>
         </div>
     </div>
@@ -167,6 +167,26 @@
                 <p class="text-xs text-slate-500 mt-3">Unknown means not assessed; it must not be interpreted as a normal finding. Review results and clinical context before making a decision.</p>
             </section>
 
+            <!-- Comprehensive Clinical and Drug-Specific Review -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4">Comprehensive Clinical & Drug-Specific Review</h2>
+                <p class="text-xs text-slate-500 mb-4">These questions identify situations needing individualized review. “Unknown” must trigger review, not be assumed safe.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Reason for IV therapy</label><select id="ivIndication" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown / not documented</option><option>Routine treatment; oral step-down may be appropriate</option><option>Severe / deep-seated infection or special indication – specialist review</option><option>IV route required for another clinical reason</option><option>Not an infection / non-antimicrobial treatment</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Ongoing need for IV-only treatment</label><select id="ivOnlyNeed" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>No ongoing IV-only requirement identified</option><option>Yes / suspected – continue IV pending specialist review</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Current IV dosing frequency</label><input id="ivFrequency" type="text" placeholder="e.g., every 8 hours" class="w-full border rounded-lg p-2.5 text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Time of last IV dose</label><input id="lastIvDoseTime" type="datetime-local" class="w-full border rounded-lg p-2.5 text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Suitable oral formulation available?</label><select id="poFormulation" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Yes – suitable tablet / capsule / liquid</option><option>Only a formulation with administration limitations</option><option>No suitable oral formulation available</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Enteral tube administration compatibility (if applicable)</label><select id="tubeCompatibility" class="w-full border rounded-lg p-2.5 text-sm"><option>Not applicable / no tube</option><option>Confirmed compatible for this drug and tube site</option><option>Not confirmed – pharmacist review needed</option><option>Not compatible</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Absorption concerns / interacting food or feeds</label><select id="absorptionConcern" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>No known concern identified</option><option>Potential concern – timing / administration review needed</option><option>Major absorption concern / unreliable absorption</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Relevant special population</label><select id="specialPopulation" class="w-full border rounded-lg p-2.5 text-sm"><option>None known / not applicable</option><option>Pregnancy or breastfeeding</option><option>Pediatric patient</option><option>Severe hepatic impairment</option><option>Immunocompromised / neutropenic</option><option>Other complex condition / unknown</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Renal function trend</label><select id="renalTrend" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Stable</option><option>Deteriorating / acute kidney injury</option><option>Improving / changing rapidly</option><option>Renal replacement therapy</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Therapeutic drug monitoring required?</label><select id="tdmStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown / not assessed</option><option>Not required for this medicine</option><option>Required – plan / level reviewed</option><option>Required – pending / not available</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Clinical response / treatment target</label><select id="clinicalResponse" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>Target achieved / responding</option><option>Partially responding – review required</option><option>Not responding / deteriorating</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Planned total treatment duration reviewed?</label><select id="durationReviewed" class="w-full border rounded-lg p-2.5 text-sm"><option>No / unknown</option><option>Yes – duration and stop / review date documented</option></select></div>
+                </div>
+            </section>
+
             <!-- Medication Safety, Approval & Conversion Follow-through -->
             <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
                 <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4">Medication Safety, Approval & Conversion Follow-through</h2>
@@ -238,12 +258,13 @@
 
         function evaluateConversion() {
             const patientId = document.getElementById('patientId').value || 'Unspecified';
-            const crcl = parseFloat(document.getElementById('patientCrCl')) ? parseFloat(document.getElementById('patientCrCl').value) : null;
+            const crclInput = document.getElementById('patientCrCl').value.trim();
+            const crcl = crclInput !== '' && Number.isFinite(Number(crclInput)) ? Number(crclInput) : null;
             const ivDrugKey = document.getElementById('ivDrug').value;
             const ivDose = parseFloat(document.getElementById('ivDose').value) || 400;
             const drugInfo = drugDatabase[ivDrugKey];
 
-            const extraAssessmentIds = ['patientAge','patientWeight','patientSex','patientDiagnosis','patientBP','patientHR','patientTemp','patientRR','patientSpo2','patientWBC','patientCRP','patientCreatinine','patientAST','patientALT','patientBilirubin','nauseaStatus','vomitingStatus','diarrheaStatus','swallowStatus','npoStatus','tubeStatus','cultureStatus','infectionTrend','contraindicationStatus','interactionStatus','approvalStatus','switchStatus','educationStatus','documentationStatus'];
+            const extraAssessmentIds = ['patientAge','patientWeight','patientSex','patientDiagnosis','patientBP','patientHR','patientTemp','patientRR','patientSpo2','patientWBC','patientCRP','patientCreatinine','patientAST','patientALT','patientBilirubin','nauseaStatus','vomitingStatus','diarrheaStatus','swallowStatus','npoStatus','tubeStatus','cultureStatus','infectionTrend','contraindicationStatus','interactionStatus','approvalStatus','switchStatus','educationStatus','documentationStatus','ivIndication','ivOnlyNeed','ivFrequency','lastIvDoseTime','poFormulation','tubeCompatibility','absorptionConcern','specialPopulation','renalTrend','tdmStatus','clinicalResponse','durationReviewed'];
             const extraAssessment = extraAssessmentIds.map(id => [id, document.getElementById(id)?.value || '']).filter(([,value]) => value && value !== 'Unknown / not documented' && value !== 'Unknown');
 
                         // Section checkboxes
@@ -340,6 +361,55 @@
             reasons.push('📌 Implementation checklist — IV/PO status: ' + switchStatus + '; patient education: ' + educationStatus + '; conversion documentation: ' + documentationStatus + '.');
             if (scoreCategory === 'eligible') {
                 reasons.push('➡️ After authorization: discontinue the IV order, start the approved PO regimen at the prescribed time, educate the patient/caregiver, and document the indication, regimen, approval, and switch time.');
+            }
+
+            // 5. Drug-specific suitability, absorption, special-population and treatment-plan checks
+            const reviewFields = {
+                ivIndication: document.getElementById('ivIndication').value,
+                ivOnlyNeed: document.getElementById('ivOnlyNeed').value,
+                poFormulation: document.getElementById('poFormulation').value,
+                tubeCompatibility: document.getElementById('tubeCompatibility').value,
+                absorptionConcern: document.getElementById('absorptionConcern').value,
+                specialPopulation: document.getElementById('specialPopulation').value,
+                renalTrend: document.getElementById('renalTrend').value,
+                tdmStatus: document.getElementById('tdmStatus').value,
+                clinicalResponse: document.getElementById('clinicalResponse').value,
+                durationReviewed: document.getElementById('durationReviewed').value
+            };
+            if (reviewFields.ivOnlyNeed === 'Yes / suspected – continue IV pending specialist review' ||
+                reviewFields.ivIndication === 'IV route required for another clinical reason' ||
+                reviewFields.poFormulation === 'No suitable oral formulation available' ||
+                reviewFields.absorptionConcern === 'Major absorption concern / unreliable absorption' ||
+                reviewFields.tubeCompatibility === 'Not compatible') {
+                scoreCategory = 'not';
+                reasons.push('❌ A possible ongoing IV-only need, unavailable PO formulation, incompatible tube administration, or major absorption concern was selected. Do not switch until the issue is resolved and the treating team reviews the case.');
+            } else if (
+                reviewFields.ivIndication === 'Unknown / not documented' ||
+                reviewFields.ivIndication === 'Severe / deep-seated infection or special indication – specialist review' ||
+                reviewFields.ivOnlyNeed === 'Unknown' ||
+                reviewFields.poFormulation === 'Unknown' ||
+                reviewFields.absorptionConcern === 'Unknown' ||
+                reviewFields.absorptionConcern === 'Potential concern – timing / administration review needed' ||
+                reviewFields.tubeCompatibility === 'Not confirmed – pharmacist review needed' ||
+                reviewFields.specialPopulation !== 'None known / not applicable' ||
+                reviewFields.renalTrend === 'Unknown' ||
+                reviewFields.renalTrend === 'Deteriorating / acute kidney injury' ||
+                reviewFields.renalTrend === 'Improving / changing rapidly' ||
+                reviewFields.renalTrend === 'Renal replacement therapy' ||
+                reviewFields.tdmStatus === 'Unknown / not assessed' ||
+                reviewFields.tdmStatus === 'Required – pending / not available' ||
+                reviewFields.clinicalResponse === 'Unknown' ||
+                reviewFields.clinicalResponse === 'Partially responding – review required' ||
+                reviewFields.clinicalResponse === 'Not responding / deteriorating' ||
+                reviewFields.durationReviewed === 'No / unknown') {
+                if (scoreCategory !== 'not') scoreCategory = 'further';
+                reasons.push('⚠️ One or more drug-specific, absorption, special-population, renal-trend, therapeutic-monitoring, response, or treatment-duration items require pharmacist / specialist review.');
+            } else {
+                reasons.push('✅ No additional concern was selected in the drug-specific suitability review; confirm all details against the current local protocol.');
+            }
+            if (!document.getElementById('ivFrequency').value.trim()) {
+                if (scoreCategory === 'eligible') scoreCategory = 'further';
+                reasons.push('ℹ️ Current IV dosing frequency is missing; verify the complete IV regimen before selecting the PO regimen.');
             }
 
             // 4. Renal Function Adjustment Checks

@@ -167,6 +167,20 @@
                 <p class="text-xs text-slate-500 mt-3">Unknown means not assessed; it must not be interpreted as a normal finding. Review results and clinical context before making a decision.</p>
             </section>
 
+            <!-- Medication Safety, Approval & Conversion Follow-through -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4">Medication Safety, Approval & Conversion Follow-through</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Drug contraindications</label><select id="contraindicationStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>No known contraindication identified</option><option>Potential / identified contraindication – review required</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Drug interactions</label><select id="interactionStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Unknown</option><option>No clinically significant interaction identified</option><option>Potential / significant interaction – review required</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Prescriber / physician approval</label><select id="approvalStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Pending / not documented</option><option>Approved</option><option>Not approved</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">IV discontinuation & PO initiation</label><select id="switchStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Not yet performed</option><option>IV discontinued and PO started</option><option>Not applicable / conversion deferred</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Patient / caregiver education</label><select id="educationStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Not yet provided</option><option>Provided (dose, timing, administration, adherence, precautions)</option><option>Not applicable</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 mb-1">Conversion documentation</label><select id="documentationStatus" class="w-full border rounded-lg p-2.5 text-sm"><option>Not yet documented</option><option>Documented in medical record</option></select></div>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">Complete medication-safety review and obtain prescriber approval before switching. IV discontinuation, PO initiation, patient education, and documentation are implementation steps to complete when conversion is authorized.</p>
+            </section>
+
             <!-- Action Buttons -->
             <div class="flex flex-wrap gap-4 justify-end no-print">
                 <button type="button" onclick="evaluateConversion()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition text-sm flex items-center gap-2">
@@ -229,7 +243,7 @@
             const ivDose = parseFloat(document.getElementById('ivDose').value) || 400;
             const drugInfo = drugDatabase[ivDrugKey];
 
-            const extraAssessmentIds = ['patientAge','patientWeight','patientSex','patientDiagnosis','patientBP','patientHR','patientTemp','patientRR','patientSpo2','patientWBC','patientCRP','patientCreatinine','patientAST','patientALT','patientBilirubin','nauseaStatus','vomitingStatus','diarrheaStatus','swallowStatus','npoStatus','tubeStatus','cultureStatus','infectionTrend'];
+            const extraAssessmentIds = ['patientAge','patientWeight','patientSex','patientDiagnosis','patientBP','patientHR','patientTemp','patientRR','patientSpo2','patientWBC','patientCRP','patientCreatinine','patientAST','patientALT','patientBilirubin','nauseaStatus','vomitingStatus','diarrheaStatus','swallowStatus','npoStatus','tubeStatus','cultureStatus','infectionTrend','contraindicationStatus','interactionStatus','approvalStatus','switchStatus','educationStatus','documentationStatus'];
             const extraAssessment = extraAssessmentIds.map(id => [id, document.getElementById(id)?.value || '']).filter(([,value]) => value && value !== 'Unknown / not documented' && value !== 'Unknown');
 
                         // Section checkboxes
@@ -295,7 +309,40 @@
                 reasons.push('⚠️ GI symptoms, microbiology, or infection trend require pharmacist/clinician review before conversion.');
             }
 
-                        // 4. Renal Function Adjustment Checks
+                        // 4. Medication safety and authorization checks
+            const contraindicationStatus = document.getElementById('contraindicationStatus').value;
+            const interactionStatus = document.getElementById('interactionStatus').value;
+            const approvalStatus = document.getElementById('approvalStatus').value;
+            const switchStatus = document.getElementById('switchStatus').value;
+            const educationStatus = document.getElementById('educationStatus').value;
+            const documentationStatus = document.getElementById('documentationStatus').value;
+
+            if (contraindicationStatus.includes('review required') || interactionStatus.includes('review required')) {
+                if (scoreCategory !== 'not') scoreCategory = 'further';
+                reasons.push('⚠️ A potential contraindication or clinically significant drug interaction was reported. Review the specific drug, formulation, and medication list before conversion.');
+            } else if (contraindicationStatus === 'No known contraindication identified' && interactionStatus === 'No clinically significant interaction identified') {
+                reasons.push('✅ No known contraindication or clinically significant interaction was reported in this screening; verify against the complete medication history.');
+            } else {
+                if (scoreCategory === 'eligible') scoreCategory = 'further';
+                reasons.push('ℹ️ Contraindications / interactions are unknown or incompletely assessed; complete medication-safety review before conversion.');
+            }
+
+            if (approvalStatus === 'Not approved') {
+                scoreCategory = 'not';
+                reasons.push('❌ Prescriber / physician approval was not granted. Do not implement the IV-to-PO switch.');
+            } else if (approvalStatus !== 'Approved') {
+                if (scoreCategory !== 'not') scoreCategory = 'further';
+                reasons.push('⚠️ Prescriber / physician approval is pending or not documented. Obtain approval before implementing the switch.');
+            } else {
+                reasons.push('✅ Prescriber / physician approval documented.');
+            }
+
+            reasons.push('📌 Implementation checklist — IV/PO status: ' + switchStatus + '; patient education: ' + educationStatus + '; conversion documentation: ' + documentationStatus + '.');
+            if (scoreCategory === 'eligible') {
+                reasons.push('➡️ After authorization: discontinue the IV order, start the approved PO regimen at the prescribed time, educate the patient/caregiver, and document the indication, regimen, approval, and switch time.');
+            }
+
+            // 4. Renal Function Adjustment Checks
             let renalAlertHtml = "";
             if (crcl !== null) {
                 if (crcl < drugInfo.renalThreshold) {
@@ -325,7 +372,7 @@
                 resultBadge.className = "p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm bg-emerald-100 text-emerald-800 border border-emerald-200";
                 resultBadge.innerHTML = "🟢 Screening Result: Potentially Eligible for IV-to-PO Conversion";
                 recommendationText = `The patient (ID: <strong>${patientId}</strong>) meets all clinical stability and absorption criteria. 
-                <br><strong>Action Plan:</strong> Review conversion from IV ${drugInfo.name} ${ivDose} mg using the drug-specific oral regimen: **${drugInfo.standardPoDose}**. Confirm indication, dose, interval, formulation, interactions, and local protocol before prescribing.
+                <br><strong>Action Plan:</strong> Review conversion from IV ${drugInfo.name} ${ivDose} mg using the drug-specific oral regimen: **${drugInfo.standardPoDose}**. Confirm indication, dose, interval, formulation, contraindications, interactions, and local protocol; obtain prescriber approval before switching. Once approved, discontinue IV therapy, start PO therapy at the prescribed time, educate the patient/caregiver, and document the conversion.
                 ${renalAlertHtml}`;
             } else if (scoreCategory === 'further') {
                 resultBadge.className = "p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm bg-amber-100 text-amber-800 border border-amber-200";

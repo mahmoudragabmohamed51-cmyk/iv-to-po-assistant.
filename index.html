@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IV to PO Therapeutic Conversion Assistant</title>
+    <!-- Tailwind CSS for modern hospital interface design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            body { background-color: white !important; }
+            .no-print { display: none !important; }
+            .print-shadow { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-md no-print">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold flex items-center gap-2">
+                    <span>🏥</span> IV to PO Therapeutic Conversion Assistant
+                </h1>
+                <p class="text-xs text-blue-200 mt-1">Advanced Clinical Pharmacy Decision-Support Prototype (Bioavailability & Renal Adjustment)</p>
+            </div>
+            <div class="mt-2 md:mt-0 bg-blue-800 text-xs px-3 py-1 rounded-full border border-blue-700">
+                Status: Clinical Screening & Dosing Tool
+            </div>
+        </div>
+    </header>
+
+    <!-- Clinical Safety Warning Banner -->
+    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 max-w-6xl mx-auto mt-4 mx-4 md:mx-auto rounded-r-lg shadow-sm no-print">
+        <div class="flex items-start">
+            <div class="text-amber-500 text-xl mr-3">⚠️</div>
+            <div class="text-sm text-amber-800">
+                <strong class="font-semibold">Clinical Safety Warning:</strong> This prototype includes automated bioavailability calculations and renal dose adjustments for educational and decision-support exploration only. It is <strong>not clinically validated</strong>. Always verify calculations with institutional protocols and clinical judgment.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6">
+        <form id="conversionForm" class="space-y-6">
+
+            <!-- Section 1: Patient Information & Dosing Parameters -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-800 w-7 h-7 rounded-full flex items-center justify-center text-sm">1</span> Patient Information & Drug Selection
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Patient ID / Alias</label>
+                        <input type="text" id="patientId" placeholder="e.g., PT-10492" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Estimated CrCl (mL/min)</label>
+                        <input type="number" id="patientCrCl" placeholder="e.g., 65" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Current IV Regimen & Dose</label>
+                        <div class="flex gap-2">
+                            <select id="ivDrug" class="w-2/3 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <option value="ciprofloxacin">Ciprofloxacin</option>
+                                <option value="levofloxacin">Levofloxacin</option>
+                                <option value="fluconazole">Fluconazole</option>
+                                <option value="metronidazole">Metronidazole</option>
+                                <option value="linezolid">Linezolid</option>
+                                <option value="pantoprazole">Pantoprazole</option>
+                                <option value="azithromycin">Azithromycin</option>
+                            </select>
+                            <input type="number" id="ivDose" placeholder="mg" value="400" class="w-1/3 border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Ward / Unit</label>
+                        <input type="text" id="patientWard" placeholder="e.g., Internal Medicine / ICU" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Clinical Stability Assessment -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-800 w-7 h-7 rounded-full flex items-center justify-center text-sm">2</span> Clinical Stability Assessment
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="stableVitals" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Hemodynamically stable (Normal BP and Heart Rate for ≥ 24 hours)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="improvingInfection" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Clinical improvement of infection / primary condition</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="afebrile" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Afebrile or trending toward normal temperature for 24h</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="noVasopressors" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">No active vasopressor or escalating inotropic support</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Section 3: Oral Route Eligibility Questionnaire -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-800 w-7 h-7 rounded-full flex items-center justify-center text-sm">3</span> Oral Route Eligibility Questionnaire
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="functionalGI" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Functional GI tract (able to swallow medications safely)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="consciousCooperative" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Patient is conscious, alert, and cooperative</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="enteralTube" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Functioning enteral feeding tube available (if NPO orally)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="noMalabsorption" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">No severe malabsorption syndrome or bowel obstruction</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Section 4: Gastrointestinal Function Assessment -->
+            <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 print-shadow">
+                <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-800 w-7 h-7 rounded-full flex items-center justify-center text-sm">4</span> Gastrointestinal Function Assessment
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="bowelSounds" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Normal bowel sounds present</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="noVomitingDiarrhea" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Absence of severe persistent vomiting or diarrhea</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 border border-slate-100 rounded-lg hover:bg-slate-50 cursor-pointer">
+                        <input type="checkbox" id="toleratingOralDiet" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                        <span class="text-sm">Tolerating oral diet, fluids, or tube feeds</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-4 justify-end no-print">
+                <button type="button" onclick="evaluateConversion()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition text-sm flex items-center gap-2">
+                    <span>🔍</span> Run Advanced Assessment & Dosing
+                </button>
+                <button type="button" onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-6 py-3 rounded-lg shadow transition text-sm flex items-center gap-2">
+                    <span>🖨️</span> Print Clinical Report
+                </button>
+            </div>
+        </form>
+
+        <!-- Section 5 & 6 & 7: Results and Rationale Output -->
+        <section id="resultsSection" class="mt-8 bg-white p-6 rounded-xl shadow-md border border-slate-200 hidden print-shadow">
+            <h2 class="text-lg font-bold text-blue-900 border-b pb-2 mb-4 flex items-center gap-2">
+                <span>📋</span> Comprehensive Screening, Bioavailability & Renal Dosing Output
+            </h2>
+            
+            <div id="resultBadge" class="p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm">
+                <!-- Dynamic Result Badge -->
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <h3 class="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wider">Clinical Evaluation Rationale</h3>
+                    <ul id="rationaleList" class="space-y-2 text-sm text-slate-600">
+                        <!-- Dynamic Reasons List -->
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <h3 class="font-bold text-blue-900 mb-2 text-sm uppercase tracking-wider">Recommended Oral Dosing & Plan</h3>
+                    <div id="actionRecommendation" class="text-sm text-blue-800 leading-relaxed space-y-2">
+                        <!-- Dynamic Recommendation -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-500 no-print">
+        <p>IV to PO Clinical Decision Support Assistant Prototype &copy; 2026</p>
+    </footer>
+
+    <!-- Script Logic with Bioavailability & Renal Adjustment -->
+    <script>
+        const drugDatabase = {
+            ciprofloxacin: { name: 'Ciprofloxacin', bioavail: 0.75, renalThreshold: 30, standardPoDose: '500 mg PO Q12H', renalAdjustmentNote: 'If CrCl < 30 mL/min, consider dose reduction or careful monitoring.' },
+            levofloxacin: { name: 'Levofloxacin', bioavail: 0.99, renalThreshold: 50, standardPoDose: '500 mg PO Q24H', renalAdjustmentNote: 'Renal adjustment required if CrCl < 50 mL/min (extend interval or reduce dose).' },
+            fluconazole: { name: 'Fluconazole', bioavail: 0.90, renalThreshold: 50, standardPoDose: '200 mg PO daily', renalAdjustmentNote: 'Reduce daily dose by 50% if CrCl < 50 mL/min.' },
+            metronidazole: { name: 'Metronidazole', bioavail: 0.90, renalThreshold: 10, standardPoDose: '500 mg PO Q8H', renalAdjustmentNote: 'Generally well tolerated; monitor in severe hepatic impairment.' },
+            linezolid: { name: 'Linezolid', bioavail: 1.00, renalThreshold: 10, standardPoDose: '600 mg PO Q12H', renalAdjustmentNote: 'No primary renal dosage adjustment required, monitor metabolites.' },
+            pantoprazole: { name: 'Pantoprazole', bioavail: 0.77, renalThreshold: 10, standardPoDose: '400 mg equivalent / 40 mg PO daily', renalAdjustmentNote: 'No renal adjustment needed.' },
+            azithromycin: { name: 'Azithromycin', bioavail: 0.38, renalThreshold: 10, standardPoDose: '500 mg PO daily', renalAdjustmentNote: 'Use with caution in severe renal impairment.' }
+        };
+
+        function evaluateConversion() {
+            const patientId = document.getElementById('patientId').value || 'Unspecified';
+            const crcl = parseFloat(document.getElementById('patientCrCl')) ? parseFloat(document.getElementById('patientCrCl').value) : null;
+            const ivDrugKey = document.getElementById('ivDrug').value;
+            const ivDose = parseFloat(document.getElementById('ivDose').value) || 400;
+            const drugInfo = drugDatabase[ivDrugKey];
+
+            // Section checkboxes
+            const stableVitals = document.getElementById('stableVitals').checked;
+            const improvingInfection = document.getElementById('improvingInfection').checked;
+            const afebrile = document.getElementById('afebrile').checked;
+            const noVasopressors = document.getElementById('noVasopressors').checked;
+
+            const functionalGI = document.getElementById('functionalGI').checked;
+            const consciousCooperative = document.getElementById('consciousCooperative').checked;
+            const enteralTube = document.getElementById('enteralTube').checked;
+            const noMalabsorption = document.getElementById('noMalabsorption').checked;
+
+            const bowelSounds = document.getElementById('bowelSounds').checked;
+            const noVomitingDiarrhea = document.getElementById('noVomitingDiarrhea').checked;
+            const toleratingOralDiet = document.getElementById('toleratingOralDiet').checked;
+
+            let reasons = [];
+            let scoreCategory = 'eligible';
+
+            // 1. Clinical Stability Checks
+            if (!stableVitals || !noVasopressors) {
+                scoreCategory = 'not';
+                reasons.push("❌ Patient lacks hemodynamic stability or requires active vasopressor support.");
+            } else {
+                reasons.push("✅ Patient demonstrates hemodynamic stability.");
+            }
+
+            if (!improvingInfection || !afebrile) {
+                if (scoreCategory !== 'not') scoreCategory = 'further';
+                reasons.push("⚠️ Infection parameters or fever curve are not yet fully resolved/stabilized.");
+            } else {
+                reasons.push("✅ Clinical infection status is improving and patient is afebrile.");
+            }
+
+            // 2. Route & GI Checks
+            if (!functionalGI && !enteralTube) {
+                scoreCategory = 'not';
+                reasons.push("❌ Oral or enteral route is compromised (no functional GI/tube access).");
+            } else {
+                reasons.push("✅ Route access via oral ingestion or enteral tube is available.");
+            }
+
+            if (!toleratingOralDiet || !noVomitingDiarrhea) {
+                if (scoreCategory !== 'not') scoreCategory = 'further';
+                reasons.push("⚠️ Gastrointestinal symptoms (vomiting/diarrhea) or failure to tolerate diet noted.");
+            } else {
+                reasons.push("✅ Gastrointestinal function is adequate with no severe vomiting or diarrhea.");
+            }
+
+            // 3. Bioavailability & Calculated Equivalent Dose
+            let calculatedPoDoseMg = Math.round(ivDose / drugInfo.bioavail);
+            reasons.push(`💊 **Bioavailability Analysis:** ${drugInfo.name} has an oral bioavailability of ~${Math.round(drugInfo.bioavail * 100)}%. Equivalent target oral dose calculated from ${ivDose}mg IV is approximately **${calculatedPoDoseMg} mg** (Standard suggested: ${drugInfo.standardPoDose}).`);
+
+            // 4. Renal Function Adjustment Checks
+            let renalAlertHtml = "";
+            if (crcl !== null) {
+                if (crcl < drugInfo.renalThreshold) {
+                    scoreCategory = scoreCategory === 'not' ? 'not' : 'further';
+                    reasons.push(`⚠️ **Renal Warning:** Estimated CrCl is ${crcl} mL/min (below threshold of ${drugInfo.renalThreshold} mL/min). ${drugInfo.renalAdjustmentNote}`);
+                    renalAlertHtml = `<p class="text-amber-700 font-semibold mt-2">⚠️ Renal Adjustment Alert: CrCl (${crcl} mL/min) requires dose/interval review.</p>`;
+                } else {
+                    reasons.push(`✅ **Renal Function:** Estimated CrCl (${crcl} mL/min) is adequate for standard conversion dosing.`);
+                    renalAlertHtml = `<p class="text-emerald-700 mt-2">✅ Renal function adequate for standard conversion.</p>`;
+                }
+            } else {
+                reasons.push(`ℹ️ **Renal Function:** CrCl not entered. Please verify renal function manually before switching.`);
+                renalAlertHtml = `<p class="text-slate-600 mt-2">ℹ️ Note: Enter CrCl for automated renal dosage guidance.</p>`;
+            }
+
+            // Render Results UI
+            const resultsSection = document.getElementById('resultsSection');
+            const resultBadge = document.getElementById('resultBadge');
+            const rationaleList = document.getElementById('rationaleList');
+            const actionRecommendation = document.getElementById('actionRecommendation');
+
+            resultsSection.classList.remove('hidden');
+            rationaleList.innerHTML = reasons.map(r => `<li>${r}</li>`).join('');
+
+            let recommendationText = "";
+            if (scoreCategory === 'eligible') {
+                resultBadge.className = "p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm bg-emerald-100 text-emerald-800 border border-emerald-200";
+                resultBadge.innerHTML = "🟢 Screening Result: Potentially Eligible for IV-to-PO Conversion";
+                recommendationText = `The patient (ID: <strong>${patientId}</strong>) meets all clinical stability and absorption criteria. 
+                <br><strong>Action Plan:</strong> Convert IV ${drugInfo.name} ${ivDose}mg to equivalent oral dosage of approximately **${calculatedPoDoseMg} mg** (${drugInfo.standardPoDose}).
+                ${renalAlertHtml}`;
+            } else if (scoreCategory === 'further') {
+                resultBadge.className = "p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm bg-amber-100 text-amber-800 border border-amber-200";
+                resultBadge.innerHTML = "🟡 Screening Result: Further Assessment Required";
+                recommendationText = `Patient (ID: <strong>${patientId}</strong>) shows partial eligibility, but minor clinical, GI, or renal parameters require clinical pharmacy review.
+                <br><strong>Action Plan:</strong> Re-evaluate within 24 hours or adjust oral dose for renal clearance.
+                ${renalAlertHtml}`;
+            } else {
+                resultBadge.className = "p-4 rounded-lg font-bold text-center text-lg mb-6 shadow-sm bg-rose-100 text-rose-800 border border-rose-200";
+                resultBadge.innerHTML = "🔴 Screening Result: Not Eligible for Conversion";
+                recommendationText = `Patient (ID: <strong>${patientId}</strong>) currently fails key hemodynamic or gastrointestinal criteria. 
+                <br><strong>Action Plan:</strong> Continue IV therapy and monitor clinical stability.
+                ${renalAlertHtml}`;
+            }
+
+            actionRecommendation.innerHTML = recommendationText;
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
